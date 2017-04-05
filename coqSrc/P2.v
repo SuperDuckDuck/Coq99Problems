@@ -20,7 +20,7 @@ Proof.
 reflexivity.
 Qed.
 (*proof that if the length of the input list is smaller than two, the default *)
-Lemma lenSmallerTwo : forall (ls : list A) 
+Lemma lenSmallerTwo : forall (ls : list A) c
 
 (*proof that nonempty lists do in fact return the last but one element of a list*)
 Lemma lastButOneNonEmpty {A : Type} : forall (ls : list A)(x : A)(y : A)(z : A), lastButOne (ls ++ [x] ++ [y] ) z = x.
