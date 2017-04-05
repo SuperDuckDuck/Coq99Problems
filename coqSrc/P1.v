@@ -2,7 +2,7 @@ Require Import List.
 Import ListNotations.
 Open Scope list_scope.
 
-Require Import Arith.
+
 
 Variable A : Type.
 
@@ -25,6 +25,26 @@ reflexivity.
 rewrite -> H .
 reflexivity.
 Qed.
+
+Lemma lastWithDefaultOneElement : forall (a : A)(b : A), lastWithDefault [a] b = a.
+Proof.
+intros.
+reflexivity.
+Qed.
+
+Lemma lastWithDefaultNonEmpty : forall (a : A)(b : A)(ls : list A), lastWithDefault  (ls ++[a]) b  = a. 
+Proof.
+intros.
+induction ls.
+reflexivity.
+simpl.
+destruct ls .
+reflexivity.
+exact IHls.
+Qed.
+
+
+
 
 
 
@@ -54,6 +74,12 @@ unfold not.
 intro.
 apply H.
 apply eq_refl.
+Qed.
+
+(*proof that a list containing exact one element returns exactly this element when passed to lastOption*)
+Lemma tmp a : lastOption ( [a] : list A) = Some a.
+Proof.
+reflexivity.
 Qed.
 
 
