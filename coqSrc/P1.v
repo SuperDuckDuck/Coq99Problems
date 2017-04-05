@@ -57,7 +57,10 @@ exact H.
 destruct ls.
 intros.
 simpl.
-firstorder.
+left.
+simpl in H.
+destruct H.
+exact H.
 intros.
 simpl In.
 Show Proof.
