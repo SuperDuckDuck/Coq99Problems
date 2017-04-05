@@ -43,8 +43,49 @@ reflexivity.
 exact IHls.
 Qed.
 
+(*a more general and nonsencical version of the previous proof*)
 
+(* work in progress
+Lemma lastWithDefaultIn : forall (a : A)(b : A)(ls : list A) , lastWithDefault ls b = a /\ a <> b <-> In a ls .
+Proof.
+intros.
+split.
+induction ls.
+intro.
+destruct H.
+simpl lastWithDefault in H.
+simpl.
+apply H0.
+apply eq_sym.
+exact H.
+destruct ls.
+intros.
+simpl.
+firstorder.
+intros.
+simpl In.
+Show Proof.
+destruct H.
+right.
+apply IHls.
+split.
+simpl in H.
+simpl.
+exact H.
+assumption.
+intro.
+induction ls.
 
+split.
+simpl in H.
+contradiction.
+simpl in H.
+contradiction.
+firstorder.
+
+split.
+Qed.
+*)
 
 
 
