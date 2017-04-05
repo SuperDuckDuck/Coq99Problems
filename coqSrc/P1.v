@@ -2,7 +2,7 @@ Require Import List.
 Import ListNotations.
 Open Scope list_scope.
 
-
+Require Import Bool.
 
 Variable A : Type.
 
@@ -14,8 +14,38 @@ match ls with
   | [] => default
 end.
 
+(*useful commands*)
+Print lastWithDefault. (*prints definition of a function / type*)
+Print true.
+Print find.  (*does also work for library functions*)
+
+Locate lastWithDefault. (*shows where the function/type is defined*)
+Locate true.
+Locate find.
 
 
+(*shows type of an expression*)
+Check lastWithDefault.
+Check find.
+Check true.
+
+
+
+(*evaluates an expression. Can be used for testing*)
+Eval compute in lastWithDefault [1;2;3;4] 0.
+(*Eval compute in find (beq 5) [1;2;3;4] .*) 
+
+
+(*tests*)
+
+Check lastWithDefault.
+
+Eval compute in lastWithDefault [1;2;3;4] 0.
+Eval compute in lastWithDefault [1] 0.
+Eval compute in lastWithDefault [] 0.
+
+
+(*proofs*)
 Lemma defaultWhenEmpty: forall (ls : list A) (x : A) , ls = nil -> lastWithDefault ls x = x.
 Proof.
 intros.
