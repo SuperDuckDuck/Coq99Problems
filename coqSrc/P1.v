@@ -44,14 +44,10 @@ exact IHls.
 Qed.
 
 (*a more general and nonsencical version of the previous proof*)
-
-(* work in progress
-Lemma lastWithDefaultIn : forall (a : A)(b : A)(ls : list A) , lastWithDefault ls b = a /\ a <> b <-> In a ls .
+Lemma lastWithDefaultIn : forall (a : A)(b : A)(ls : list A) , lastWithDefault ls b = a /\ a <> b -> In a ls .
 Proof.
 intros.
-split.
 induction ls.
-intro.
 destruct H.
 simpl lastWithDefault in H.
 simpl.
@@ -73,20 +69,25 @@ simpl in H.
 simpl.
 exact H.
 assumption.
+Qed.
+
+
+
+(*work in progress 
+Lemma lastWithDefaultNotIn : forall (a : A)(ls : list A) , lastWithDefault ls a = a -> ~ In a ls .
+Proof.
+intros.
+unfold not.
 intro.
 induction ls.
-
-split.
-simpl in H.
+simpl in H0.
 contradiction.
-simpl in H.
-contradiction.
-firstorder.
+apply IHls.
+destruct ls.
 
-split.
-Qed.
+
+Lemma nonEmptyListFindTrue : forall (a : A) ( b : A) (ls : list A) , 
 *)
-
 
 
 (*version using the option type (Maybe in Haskell)*)
