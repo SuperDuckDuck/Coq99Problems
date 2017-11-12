@@ -1,8 +1,9 @@
 Require Import List.
 Import ListNotations.
 Open Scope list_scope.
+Require Import EquivDec.
 
-Require Import Bool.
+
 
 Variable A : Type.
 
@@ -30,10 +31,42 @@ Check find.
 Check true.
 
 
-
 (*evaluates an expression. Can be used for testing*)
 Eval compute in lastWithDefault [1;2;3;4] 0.
-(*Eval compute in find (beq 5) [1;2;3;4] .*) 
+
+
+(*Require Import EquivDec Equivalence Program*)
+ (*Require Import Relation_Definitions.*)
+
+
+(*
+Fixpoint removeR `{ @EqDec R a b}`(x : R) (l : list R) : list R
+:=
+  match l with
+  | nil => nil
+  | y::tl => if ( x == y) then removeR x tl else y::(removeR x tl)
+  end.
+*)
+
+
+
+Require Import  Equivalence.
+Require Import Relation_Definitions.
+
+Fixpoint removeS {V:Type}{eqV:relation V}{equivV:@Equivalence V eqV}{dontCare :@EqDec V eqV equivV} (x : V ) (l : list V) : list V
+:=
+  match l with
+  | nil => nil
+  | y::tl => if ( equiv_dec x  y) then removeS x tl else y::(removeS x tl)
+  end.
+
+
+Eval compute in find (fun x => if equiv_dec 1 x then true else false ) [1;2;3;4].
+
+
+Eval compute in removeS 5 [5;4;4;2;0;1].
+Eval compute in find ((fun x => if equiv_dec x true then true else false )) [false; false] .
+
 
 
 (*tests*)
@@ -50,10 +83,12 @@ Lemma defaultWhenEmpty: forall (ls : list A) (x : A) , ls = nil -> lastWithDefau
 Proof.
 intros.
 induction ls.
-simpl.
-reflexivity.
-rewrite -> H .
-reflexivity.
+  +
+   simpl.
+   reflexivity.
+  +
+  rewrite -> H .
+  reflexivity.
 Qed.
 
 Lemma lastWithDefaultOneElement : forall (a : A)(b : A), lastWithDefault [a] b = a.
