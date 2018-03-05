@@ -1,32 +1,37 @@
-(*Problem 2: find the penultimate element of a list*)
-
 Require Import List.
 Import ListNotations.
-Open Scope list_scope.
 
-
-
-
-Fixpoint lastButOne {A : Type} (ls : list A)(default : A) : A := 
+Fixpoint penU {X : Type} (ls: list X): option X := 
 match ls with 
-  | [ ] => default 
-  | [x;_] => x
-  | _::xs => lastButOne xs default 
+| [] => None
+| [x;y] => Some x
+| x::xs => penU xs
 end.
- 
-(*proof for empty lists*)
-Lemma  lastButOneNil {A : Type} :  forall (x : A), lastButOne [] x = x.
+
+Theorem penUNone {X : Type} : forall (ls : list X), 
+  length ls < 2 -> penU ls = None.
 Proof.
-reflexivity.
+  destruct ls.
+  auto.
+  destruct ls.
+  auto.
+  intro.
+  inversion H.
+  inversion H1.
+  inversion H3.
 Qed.
-(*proof that if the length of the input list is smaller than two, the default *)
-Lemma lenSmallerTwo : forall (ls : list A) c
 
-(*proof that nonempty lists do in fact return the last but one element of a list*)
-Lemma lastButOneNonEmpty {A : Type} : forall (ls : list A)(x : A)(y : A)(z : A), lastButOne (ls ++ [x] ++ [y] ) z = x.
-
-
-Fixpoint lastButOneOption  {A : Type}(ls : list A) : A := 
-match ls with 
-  | [x ;_] => Some x
-  | 
+Theorem penUCorrect {X : Type} : forall (ls : list X) x y, penU (ls ++ [x;y]) = Some x.
+Proof.
+  intros.
+  induction ls.
+  + reflexivity.
+  + destruct ls.
+    - auto.
+    - destruct ls.
+      * auto.
+      * assert (penU ((a :: x0 :: x1 :: ls) ++ [x; y]) =  penU ((x0 :: x1 :: ls) ++ [x; y])).
+        { reflexivity. }
+        rewrite H.
+        exact IHls.
+Qed.
